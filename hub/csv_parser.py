@@ -1,3 +1,4 @@
+# Parses the CSV data from the CSV files to initially load into the hashtable
 class CsvParser:
     def __init__(self) -> None:
         pass

@@ -1,6 +1,7 @@
 import argparse
 
 
+# CLI class object for the user interface
 class CLI:
     def __init__(self) -> None:
         parser = argparse.ArgumentParser()
