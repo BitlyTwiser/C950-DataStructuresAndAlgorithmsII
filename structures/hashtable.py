@@ -5,9 +5,6 @@ class Node:
         self.value = value
         self.next = None
 
-    def __repr__(self):
-        return str(self)
-
 
 # Hash table with separate chaining
 class HashMap:
@@ -19,32 +16,44 @@ class HashMap:
         self.buckets = [None] * self.capacity
 
     # Generate a hash for a given key
-    # Input:  key - string
-    # Output: Index from 0 to self.capacity
-    def hash(self, key):
-        hashsum = 0
-        for idx, c in enumerate(key):
-            hashsum += (idx + len(key)) ** ord(c)
-            hashsum = hashsum % self.capacity
-        return hashsum
+    def _hash(self, key):
+        sum = 0
+        for index, character in enumerate(key):
+            # index + length of key with an exponent of the unicode representation of the character.
+            sum += (index + len(key)) ** ord(character)
+            # The sum is then set to the modulo of the given capacity
+            sum %= self.capacity
+        return sum
+
+    # Prints all elements from hashmap utilizing the linked list nodes to display values.
+    def print_all(self):
+        for index, element in enumerate(self.buckets):
+            node = self.buckets[index]
+            while node is not None:
+                print(element.value)
+                node = node.next
+            if node is None:
+                continue
 
     # Insert a key,value pair to the hashmap
-    def insert(self, key, value):
+    def add(self, key, value):
         self.size += 1
-        index = self.hash(key)
+        index = self._hash(key)
         node = self.buckets[index]
+        # Add to head of list of node is none
         if node is None:
             self.buckets[index] = Node(key, value)
             return
         prev = node
+        # Insert onto tail of list.
         while node is not None:
             prev = node
             node = node.next
         prev.next = Node(key, value)
 
     # Find given key value in linked list.
-    def find(self, key):
-        index = self.hash(key)
+    def get(self, key):
+        index = self._hash(key)
         node = self.buckets[index]
         while node is not None and node.key != key:
             node = node.next
@@ -54,9 +63,9 @@ class HashMap:
             return node.value
 
     # Remove given element from linked list.
-    def remove(self, key):
+    def delete(self, key):
         # 1. Compute hash
-        index = self.hash(key)
+        index = self._hash(key)
         node = self.buckets[index]
         prev = None
         while node is not None and node.key != key:

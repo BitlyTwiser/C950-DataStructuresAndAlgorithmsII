@@ -8,9 +8,15 @@
 # create custom hash table
 # create CLI and way to interface with application
 #
+from structures.hashtable import HashMap
+
 
 def main():
-  print("Hi")
+  hash = HashMap()
+  hash.add("Hello", 123123123)
+  hash.add("Things", 123.123123)
+  hash.print_all()
+
 
 if __name__ == '__main__':
   main()
