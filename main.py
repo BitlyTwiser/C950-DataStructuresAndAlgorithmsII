@@ -1,6 +1,6 @@
 #########################
 # Name: Joshua Groeschl #
-# Student ID: 
+# Student Id: 01133572  #
 #########################
 
 
@@ -15,6 +15,8 @@ def main():
   hash = HashMap()
   hash.add("Hello", 123123123)
   hash.add("Things", 123.123123)
+  hash.print_all()
+  a = hash.get("Things")
   hash.print_all()
 
 

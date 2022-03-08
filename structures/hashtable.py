@@ -1,4 +1,4 @@
-# Note for avoiding collisions and curating a linked list to use for the hashtable
+# Node used curating a linked list to use within the hash table
 class Node:
     def __init__(self, key, value):
         self.key = key
@@ -16,6 +16,7 @@ class HashMap:
         self.buckets = [None] * self.capacity
 
     # Generate a hash for a given key
+    # _hash is a private method.
     def _hash(self, key):
         sum = 0
         for index, character in enumerate(key):
@@ -25,7 +26,7 @@ class HashMap:
             sum %= self.capacity
         return sum
 
-    # Prints all elements from hashmap utilizing the linked list nodes to display values.
+    # Prints all elements from hashmap utilizing the linked list nodes to display values of elements.
     def print_all(self):
         for index, element in enumerate(self.buckets):
             node = self.buckets[index]
