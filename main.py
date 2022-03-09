@@ -10,20 +10,25 @@
 #
 from cli.cli import CLI
 from structures.hashtable import HashMap
+from hub.csv_parser import CsvParser
 
 
 def main():
-  cli = CLI()
-  args = cli.return_given_arguments()
+    # Instantiate the CLI class object and aquire the data passed in from the CLI at program runtime.
+    cli = CLI()
+    args = cli.return_given_arguments()
 
-  hash = HashMap()
-  hash.add("Hello", 123123123)
-  hash.add("Things", 123.123123)
+    CsvParser().parse_packages_csv()
 
-  a = hash.get("Things")
+    hash = HashMap()
+    hash.add("Hello", 123123123)
+    hash.add("Things", 123.123123)
 
-  if(args.all):
-    hash.print_all()
+    a = hash.get("Things")
+
+    if (args.all):
+        hash.print_all()
+
 
 if __name__ == '__main__':
-  main()
+    main()

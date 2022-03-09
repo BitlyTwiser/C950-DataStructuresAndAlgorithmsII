@@ -1,14 +1,50 @@
 import csv
+from hub.packages import Packages
+from structures.hashtable import HashMap
 
 
 # Parses the CSV data from the CSV files to initially load into the hashtable
+def parse_address_from_csv_data(address, city, state, zipcode):
+    return "%s %s %s %s".format()
+
+
 class CsvParser:
     def __init__(self):
-        self.packages_csv = ''
-        self.distance_table_csv = ''
+        self.packages_csv = 'wgups_package_file.csv'
+        self.distance_table_csv = 'wgups_distance_table.csv'
 
-    def parse_distance_table_data(self):
-        pass
+    # Private helper method to parse address from fields.
 
-    def parse_packages(self):
-        pass
+    def parse_distance_table_data_dump_into_hash(self):
+        with open(self.distance_table_csv) as distance_csv:
+            csv_data = csv.reader(distance_csv, delimiter=',')
+            next(csv_data)  # Skip header
+
+            for row in csv_data:
+                # Build address from fields in csv
+                address = parse_address_from_csv_data(row[1], row[2], row[3], row[4])
+
+                # Other fields
+                package_id = row[0]
+                delivery_deadline = row[5]
+                mass = row[6]
+                special_notes = row[7]
+
+                package = Packages(package_id, address, delivery_deadline, mass, special_notes)
+
+    def parse_packages_csv(self):
+        with open(self.packages_csv) as packages_csv:
+            csv_data = csv.reader(packages_csv, delimiter=',')
+            next(csv_data) # Skip header
+            for row in csv_data:
+                # Build address from fields in csv
+                address = parse_address_from_csv_data(row[1], row[2], row[3], row[4])
+
+                # Other fields
+                package_id = row[0]
+                delivery_deadline = row[5]
+                mass = row[6]
+                special_notes = row[7]
+
+                package = Packages(package_id, address, delivery_deadline, mass, special_notes)
+                HashMap.add(package_id, package)
