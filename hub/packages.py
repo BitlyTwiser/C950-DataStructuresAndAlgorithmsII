@@ -7,4 +7,10 @@ class Packages:
         self.package_mass = package_mass
         self.special_notes = special_notes
         self.delivery_status = delivery_status
+        self.delivery_time = ''
 
+    def set_package_status(self, status):
+        self.delivery_status = status
+
+    def set_package_delivery_time(self):
+        pass
