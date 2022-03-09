@@ -5,7 +5,7 @@ from structures.hashtable import HashMap
 
 # Parses the CSV data from the CSV files to initially load into the hashtable
 def parse_address_from_csv_data(address, city, state, zipcode):
-    return "%s %s %s %s".format()
+    return f"{address}, {city},{state} {zipcode}"
 
 
 class CsvParser:
