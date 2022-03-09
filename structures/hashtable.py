@@ -50,7 +50,7 @@ class HashMap:
         while node is not None:
             prev = node
             node = node.next
-        prev.next = Node(key, value)
+            prev.next = Node(key, value)
 
     # Find given key value in linked list.
     def get(self, key):
