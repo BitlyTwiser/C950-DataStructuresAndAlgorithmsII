@@ -33,9 +33,10 @@ class CsvParser:
                 package = Packages(package_id, address, delivery_deadline, mass, special_notes)
 
     def parse_packages_csv(self):
+        packages_hash = HashMap()
         with open(self.packages_csv) as packages_csv:
             csv_data = csv.reader(packages_csv, delimiter=',')
-            next(csv_data) # Skip header
+            next(csv_data)  # Skip header
             for row in csv_data:
                 # Build address from fields in csv
                 address = parse_address_from_csv_data(row[1], row[2], row[3], row[4])
@@ -46,5 +47,7 @@ class CsvParser:
                 mass = row[6]
                 special_notes = row[7]
 
-                package = Packages(package_id, address, delivery_deadline, mass, special_notes)
-                HashMap.add(package_id, package)
+                package = Packages(package_id, address, delivery_deadline, mass, special_notes, "at the hub")
+                packages_hash.add(package_id, package)
+
+        return packages_hash

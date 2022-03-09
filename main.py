@@ -18,17 +18,10 @@ def main():
     cli = CLI()
     args = cli.return_given_arguments()
 
-    CsvParser().parse_packages_csv()
-
-    hash = HashMap()
-    hash.add("Hello", 123123123)
-    hash.add("Things", 123.123123)
-
-    a = hash.get("Things")
+    packages = CsvParser().parse_packages_csv()
 
     if (args.all):
-        hash.print_all()
-
+        packages.print_all()
 
 if __name__ == '__main__':
     main()

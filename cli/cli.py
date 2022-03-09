@@ -9,7 +9,7 @@ class CLI:
         self.parser.add_argument('-a', '--all', action='store_true',
                             help='Displays data for ALL packages')
         self.parser.add_argument('-p', '--package', type=str,
-                            help='Displays Data for Specific package')
+                            help='Displays Data for Specific package, must be a timestamp in military time!!')
 
     # Returns the arguments provided via the cli interface
     def return_given_arguments(self):
