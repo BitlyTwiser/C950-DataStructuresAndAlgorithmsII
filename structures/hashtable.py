@@ -1,4 +1,4 @@
-# Node used curating a linked list to use within the hash table
+# Node object curating a linked list to use within the hash table
 class Node:
     def __init__(self, key, value):
         self.key = key
@@ -8,7 +8,7 @@ class Node:
 
 # Hash table with separate chaining
 class HashMap:
-    # Initialize hash table
+    # Constructor hash table
     def __init__(self):
         # Static capacity value for hashing.
         self.capacity = 40
@@ -19,12 +19,17 @@ class HashMap:
     def _adjust_hash_table_size(self, extend_value):
         self.buckets.extend([None] * extend_value)
 
-    # Generate a hash for a given key
-    # _hash is a private method.
+    """
+     Private method for generating a hash for a given key
+     O(N)
+    """
     def _hash(self, key):
         return hash(key) % len(self.buckets)
 
-    # Prints all elements from hashmap utilizing the linked list nodes to display values of elements.
+    """
+     Prints all elements from hashmap utilizing the linked list nodes to display values of elements.
+     O(N^2)
+    """
     def print_all(self):
         for index, element in enumerate(self.buckets):
             node = self.buckets[index]
@@ -34,9 +39,12 @@ class HashMap:
             if node is None:
                 continue
 
-    # Insert a key,value pair to the hashmap OR update value found.
-    # The add method is self modifying as it will alter elements in the linked list if the keys of the
-    # input value match a key of an existing element.
+    """
+     Insert a key,value pair to the hashmap OR update value found.
+     The add method is self modifying as it will alter elements in the linked list if the keys of the
+     input value match a key of an existing element.
+     O(N)
+    """
     def add(self, key, value):
         self.size += 1
 
@@ -61,7 +69,10 @@ class HashMap:
                 node = node.next
                 prev.next = Node(key, value)
 
-    # Find given key value in linked list.
+    """
+     Find given key value in linked list.
+     O(N)
+    """
     def get(self, key):
         index = self._hash(key)
         node = self.buckets[index]
@@ -72,7 +83,11 @@ class HashMap:
         else:
             return node.value
 
-    # Remove given element from linked list.
+    """
+     Remove given element from hash
+     O(N)
+    """
+
     def delete(self, key):
         # 1. Compute hash
         index = self._hash(key)
