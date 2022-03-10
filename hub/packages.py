@@ -33,6 +33,12 @@ class Package:
     def set_package_delivery_time(self):
         pass
 
+    def print_package_details(self):
+        print(f"Package ID: {self.package_Id}\t"
+              f"Address: {self.delivery_address}\t"
+              f"Deadline: {self.delivery_deadline}\t "
+              f"Mass: {self.package_mass}\t "
+              f"Status: {self.delivery_status}")
 
 """
 Packages class for tracking ALL packges
@@ -60,7 +66,7 @@ class Packages:
         for index, element in enumerate(self.packages):
             node = self.packages[index]
             while node is not None:
-                print(element.value)
+                element.value.print_package_details()
                 node = node.next
             if node is None:
                 continue
