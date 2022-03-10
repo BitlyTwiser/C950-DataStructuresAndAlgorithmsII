@@ -1,9 +1,12 @@
 import csv
 from hub.packages import Package
 from structures.hashtable import HashMap
+import datetime
 
-
-# Parses the CSV data from the CSV files to initially load into the hashtable
+"""
+Parses the CSV data from the CSV files to initially load into the hashtable
+O(1) time complexity
+"""
 def parse_address_from_csv_data(address, city, state, zipcode):
     return f"{address}, {city},{state} {zipcode}"
 
@@ -23,7 +26,10 @@ class CsvParser:
 
             for row in csv_data:
                 pass
-
+    """
+    Parses packages CSV and stores data into custom hash table
+    O(N)
+    """
     def parse_packages_csv(self):
         packages_hash = HashMap()
         with open(self.packages_csv) as packages_csv:
@@ -40,7 +46,15 @@ class CsvParser:
                 special_notes = row[7]
 
                 # All packages start at hub
-                package = Package(package_id, address, delivery_deadline, mass, special_notes, "at the hub")
+                package = Package(
+                    package_id,
+                    address,
+                    delivery_deadline,
+                    mass,
+                    special_notes,
+                    "at the hub",
+                    datetime.time(hour=8, minute=0).strftime("%I:%M %p"))
+
                 packages_hash.add(int(package_id), package)
 
         return packages_hash.buckets
