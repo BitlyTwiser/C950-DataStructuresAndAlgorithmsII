@@ -53,4 +53,10 @@ class Packages:
         return datetime.time(hour=int(split_time_string[0]), minute=int(split_time_string[1])).strftime("%I:%M %p")
 
     def print_all_packages(self):
-        print('hi')
+        for index, element in enumerate(self.packages):
+            node = self.packages[index]
+            while node is not None:
+                print(element.value)
+                node = node.next
+            if node is None:
+                continue
