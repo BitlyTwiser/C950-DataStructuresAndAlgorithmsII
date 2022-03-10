@@ -43,4 +43,4 @@ class CsvParser:
                 package = Package(package_id, address, delivery_deadline, mass, special_notes, "at the hub")
                 packages_hash.add(int(package_id), package)
 
-        return packages_hash
+        return packages_hash.buckets

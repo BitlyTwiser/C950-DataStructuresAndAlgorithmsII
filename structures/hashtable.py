@@ -20,24 +20,11 @@ class HashMap:
         self.buckets.extend([None] * extend_value)
 
     """
-     Private method for generating a hash for a given key
+     Private method for generating a hash for a given key using native python hashing method.
      O(N)
     """
     def _hash(self, key):
-        return hash(key) % len(self.buckets)
-
-    """
-     Prints all elements from hashmap utilizing the linked list nodes to display values of elements.
-     O(N^2)
-    """
-    def print_all(self):
-        for index, element in enumerate(self.buckets):
-            node = self.buckets[index]
-            while node is not None:
-                print(element.value)
-                node = node.next
-            if node is None:
-                continue
+        return hash(key)
 
     """
      Insert a key,value pair to the hashmap OR update value found.

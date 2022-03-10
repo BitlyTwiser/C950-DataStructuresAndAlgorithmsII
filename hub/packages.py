@@ -52,6 +52,10 @@ class Packages:
 
         return datetime.time(hour=int(split_time_string[0]), minute=int(split_time_string[1])).strftime("%I:%M %p")
 
+    """
+     Prints all elements from hashmap utilizing the linked list nodes to display values of elements.
+     O(N^2)
+    """
     def print_all_packages(self):
         for index, element in enumerate(self.packages):
             node = self.packages[index]
