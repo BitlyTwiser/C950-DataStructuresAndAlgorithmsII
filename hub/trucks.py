@@ -1,4 +1,3 @@
-# Keeps track of all the truck movements
 import datetime
 
 # Truck 1 load with stuff and it goes out first, then comes back after the time of the faulty package and drivers switches
@@ -27,8 +26,6 @@ class Trucks:
         self.truck1_packages = []
         self.truck2_packages = []
         self.truck3_packages = []
-        # Call loading function in the constructor
-        # self.truck_loading_dock(self.packages)
 
     # Parses special notes and times to determine which trucks packages should be on.
     def truck_loading_dock(self, packages):

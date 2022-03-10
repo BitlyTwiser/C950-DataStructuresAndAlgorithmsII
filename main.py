@@ -12,7 +12,8 @@ from cli.cli import CLI
 from structures.hashtable import HashMap
 from hub.csv_parser import CsvParser
 from hub.trucks import Trucks
-
+from hub.packages import Packages
+from colors.colors import Colors
 """
 Primary execution point of the applicatino.
 
@@ -24,13 +25,19 @@ def main():
     args = cli.return_given_arguments()
     csv = CsvParser()
 
-    packages = csv.parse_packages_csv()
+    parsed_packages = csv.parse_packages_csv()
     distance_table = csv.parse_distance_table_data_dump_into_hash()
-    trucks = Trucks(packages)
+    packages = Packages(parsed_packages)
 
-    print(f"All deliveries were completed with total mileage of: {trucks.total_distance}")
-    if (args.all):
-        packages.print_all()
+    trucks = Trucks(parsed_packages)
+
+    print(f"{Colors.OKGREEN}All deliveries were completed with total mileage of: {trucks.total_distance}{Colors.ENDC}")
+    if args.all:
+        packages.print_all_packages()
+    elif args.package:
+        print(parsed_packages.get(int(args.package)))
+    elif args.time:
+        packages.all_packages_with_timestamp(args.time)
 
 if __name__ == '__main__':
     main()

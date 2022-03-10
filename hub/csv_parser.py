@@ -1,5 +1,5 @@
 import csv
-from hub.packages import Packages
+from hub.packages import Package
 from structures.hashtable import HashMap
 
 
@@ -40,7 +40,7 @@ class CsvParser:
                 special_notes = row[7]
 
                 # All packages start at hub
-                package = Packages(package_id, address, delivery_deadline, mass, special_notes, "at the hub")
+                package = Package(package_id, address, delivery_deadline, mass, special_notes, "at the hub")
                 packages_hash.add(int(package_id), package)
 
         return packages_hash

@@ -1,3 +1,4 @@
+import datetime
 """
 Packages Class Object
 
@@ -6,7 +7,7 @@ Sets time of packages based on distance traveled.
 """
 
 
-class Packages:
+class Package:
     def __init__(self, package_id, delivery_address, delivery_deadline, package_mass, special_notes, delivery_status):
         self.package_Id = package_id
         self.delivery_address = delivery_address
@@ -31,3 +32,25 @@ class Packages:
 
     def set_package_delivery_time(self):
         pass
+
+
+"""
+Packages class for tracking ALL packges
+"""
+
+
+class Packages:
+    """
+        Constructor for Packages class
+    """
+
+    def __init__(self, packages):
+        self.packages = packages
+
+    def all_packages_with_timestamp(self, timestamp):
+        split_time_string = timestamp.split(":")
+
+        return datetime.time(hour=int(split_time_string[0]), minute=int(split_time_string[1])).strftime("%I:%M %p")
+
+    def print_all_packages(self):
+        print('hi')
