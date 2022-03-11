@@ -17,12 +17,16 @@ class CsvParser:
         self.distance_table_csv = 'wgups_distance_table.csv'
 
     # Private helper method to parse address from fields.
-
+    """
+    Parse distance table data and create two arrays
+    O(N)
+    """
     def parse_distance_table_data_dump_into_hash(self):
         distance_table = HashMap()
+        distance_csv_array = []
         with open(self.distance_table_csv) as distance_csv:
             csv_data = csv.reader(distance_csv, delimiter=',')
-            next(csv_data)  # Skip header
+            initial_row_array = next(csv_data)[2:]
 
             for row in csv_data:
                 pass
@@ -57,4 +61,4 @@ class CsvParser:
 
                 packages_hash.add(int(package_id), package)
 
-        return packages_hash.buckets
+        return packages_hash, packages_hash.buckets

@@ -29,31 +29,37 @@ def main():
     args = cli.return_given_arguments()
     csv = CsvParser()
 
-    parsed_packages = csv.parse_packages_csv()
-    distance_table = csv.parse_distance_table_data_dump_into_hash()
+    packages_hash, parsed_packages = csv.parse_packages_csv()
     packages = Packages(parsed_packages)
 
     trucks = Trucks(parsed_packages)
+    # Tuple unpacking to grab all trucks.
+    t1, t2, t3 = trucks.truck_loading_dock()
 
     print(f"{Colors.OKGREEN}All deliveries were completed with total mileage of: {Colors.BOLD}{Colors.OKBLUE}{trucks.total_distance}{Colors.ENDC}")
     if args.all:
         packages.print_all_packages()
     elif args.package:
-        try:
-            package_id = int(args.package)
-        except ValueError:
-            print(f"{Colors.FAIL}You must pass in an integer!{Colors.ENDC}")
+
+        if args.time:
+            try:
+                package_id = int(args.package)
+            except ValueError:
+                print(f"{Colors.FAIL}You must pass in an integer for package ID!{Colors.ENDC}")
+            else:
+                package_by_id = packages_hash.get(package_id)
+            try:
+                split_time_string = args.time.split(":")
+                timestamp = datetime.time(hour=int(split_time_string[0]), minute=int(split_time_string[1])).strftime(
+                    "%I:%M %p")
+            except IndexError:
+                print(f"{Colors.FAIL}Please present time in format: HH:MM. Example: 16:00{Colors.ENDC}")
+            else:
+                if package_by_id.package_time >= timestamp:
+                    package_by_id.print_package_details()
         else:
-            print(parsed_packages.get(package_id))
-    elif args.time:
-        try:
-            split_time_string = args.time.split(":")
-            timestamp = datetime.time(hour=int(split_time_string[0]), minute=int(split_time_string[1])).strftime(
-                "%I:%M %p")
-        except IndexError:
-            print(f"{Colors.FAIL}Please present time in format: HH:MM. Example: 16:00{Colors.ENDC}")
-        else:
-            packages.all_packages_with_timestamp(timestamp)
+            print(f"{Colors.FAIL}One must use -t with the -p flag{Colors.ENDC}")
+            return
     elif args.timerange:
         try:
             start_time = args.timerange.split("-")[0].split(":")

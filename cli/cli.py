@@ -11,11 +11,12 @@ class CLI:
     def __init__(self) -> None:
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('-a', '--all', action='store_true',
-                                 help='Displays data for ALL packages')
+                                 help='Displays data for ALL packages after program has ran')
         self.parser.add_argument('-p', '--package', type=str,
                                  help='Displays data for specific package using provided package ID')
         self.parser.add_argument('-t', '--time', type=str,
-                                 help='Displays Data for ALL packages based on the input time. '
+                                 help='Displays Data for ALL packages based on the input time. Used in conjunction '
+                                      'with -p '
                                       'Input must be in military time (HH:MM). Example: 13:00')
         self.parser.add_argument('-tr', '--timerange', type=str,
                                  help='Displays Data for ALL packages based on the input time interval. '

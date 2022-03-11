@@ -17,6 +17,8 @@ class Package:
         self.package_mass = package_mass
         self.special_notes = special_notes
         self.delivery_status = delivery_status
+        self.delivery_time = 'None'
+        # separate time element to track just general time of package for the CLI interface
         self.package_time = package_time
 
     """
@@ -45,7 +47,7 @@ class Package:
               f"Address: {self.delivery_address}\t"
               f"Deadline: {self.delivery_deadline}\t "
               f"Mass: {self.package_mass}\t "
-              f"Time: {self.package_time}\t"
+              f"Delivery Time: {self.delivery_time}\t"
               f"Status: {self.delivery_status}")
 
 
@@ -90,7 +92,7 @@ class Packages:
             while node is not None:
                 if start_time <= element.value.package_time <= end_time:
                     element.value.print_package_details()
-                    node = node.next
+                node = node.next
             if node is None:
                 continue
 
