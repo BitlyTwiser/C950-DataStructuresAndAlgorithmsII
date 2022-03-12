@@ -42,10 +42,12 @@ class RoutingAlgorithm:
             # Update first package with distance from hub and deliver it.
             if ticker == 0:
                 self.update_package_and_truck(truck, p, address_data[0])
+                continue
 
             if return_to_hub and ticker == address_count:
                 # Begin and end at hub
                 self.update_package_and_truck(truck, p, address_data[0])
+                continue
 
             # Update all the other packages and deliver them using the neighbors found in the nearest neighbor algorithm.
             neighbors, neighbor_distance = self.get_nearest_addresses(address_vertices, address_data, 1)
@@ -82,4 +84,5 @@ class RoutingAlgorithm:
         package.delivery_status = 'delivered'
         package.package_time = delivery_time
         truck.delivery_time = delivery_time
+        truck.total_miles += distance
 

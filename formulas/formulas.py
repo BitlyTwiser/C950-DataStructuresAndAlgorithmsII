@@ -20,10 +20,10 @@ class Formulas:
         if start_time < package_departure_time:
             package.delivery_status = "at hub"
             package.package_time = "None"
-        elif start_time >= package_departure_time <= end_time and start_time >= package.package_time.strftime("%I:%M %p") <= end_time and package.delivery_status != 'delivered':
+        elif start_time >= package_departure_time <= end_time and start_time >= package.package_time <= end_time and package.delivery_status != 'delivered':
             package.delivery_status = 'en route'
             package.package_time = "None"
-        elif start_time >= package_departure_time and (end_time < package.package_time.strftime("%I:%M %p") or package.delivery_status != 'delivered'):
+        elif start_time >= package_departure_time and (end_time < package.package_time or package.delivery_status != 'delivered'):
             package.delivery_status = 'en route'
             package.package_time = "None"
 

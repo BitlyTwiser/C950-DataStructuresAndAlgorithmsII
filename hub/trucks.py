@@ -141,9 +141,6 @@ class Truck1:
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
 
-    def package_delivery_time(self):
-        pass
-
     # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
     # Aka split up the distances and do not use them all in each truck.
     def start_deliveries(self):
@@ -177,9 +174,6 @@ class Truck2:
         for i in range(len(self.packages)):
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
-
-    def package_delivery(self):
-        pass
 
     # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
     def start_deliveries(self):
@@ -215,9 +209,6 @@ class Truck3:
         for i in range(len(self.packages)):
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
-
-    def package_delivery(self):
-        pass
 
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
