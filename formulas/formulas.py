@@ -1,3 +1,5 @@
+from math import sqrt
+
 class Formulas:
     """
     Returns time taken for the distance traveled.
@@ -5,7 +7,7 @@ class Formulas:
     """
 
     def get_time_from_distance_and_speed(self, distance, speed):
-        return distance / speed
+        return (distance / speed) * 60
 
     """
     Determines how to adjust packages to display correct data upon the user input query for time range.
@@ -18,10 +20,10 @@ class Formulas:
         if start_time < package_departure_time:
             package.delivery_status = "at hub"
             package.package_time = "None"
-        elif start_time >= package_departure_time <= end_time and start_time >= package.package_time <= end_time and package.delivery_status != 'delivered':
+        elif start_time >= package_departure_time <= end_time and start_time >= package.package_time.strftime("%I:%M %p") <= end_time and package.delivery_status != 'delivered':
             package.delivery_status = 'en route'
             package.package_time = "None"
-        elif start_time >= package_departure_time and (end_time < package.package_time or package.delivery_status != 'delivered'):
+        elif start_time >= package_departure_time and (end_time < package.package_time.strftime("%I:%M %p") or package.delivery_status != 'delivered'):
             package.delivery_status = 'en route'
             package.package_time = "None"
 
@@ -35,8 +37,18 @@ class Formulas:
         if start_time <= package_departure_time:
             package.delivery_status = "at hub"
             package.package_time = "None"
-        elif start_time >= package_departure_time and start_time >= package.package_time:
+        elif start_time >= package_departure_time and start_time >= package.package_time.strftime("%I:%M %p"):
             pass
-        elif start_time >= package_departure_time < package.package_time:
+        elif start_time >= package_departure_time < package.package_time.strftime("%I:%M %p"):
             package.delivery_status = 'en route'
             package.package_time = "None"
+    """
+    Calculates euclidean distance between two vertices
+    O(N)
+    """
+    def euclidean_distance(self, row1, row2):
+        distance = 0.0
+        for i in range(len(row1) - 1):
+            distance += (row1[i] - row2[i]) ** 2
+        return sqrt(distance)
+

@@ -92,7 +92,6 @@ def main():
                     Formulas().package_data_display_engine_for_start_and_end_time(package, start_time_timestamp,
                                                                                   end_time_timestamp)
 
-            packages.print_all_packages()
             trucks.print_delivery_message()
 
 

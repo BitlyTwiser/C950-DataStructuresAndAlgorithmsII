@@ -10,8 +10,9 @@ Sets time of packages based on distance traveled.
 
 class Package:
     def __init__(self, package_id, delivery_address, delivery_deadline, package_mass, special_notes, delivery_status,
-                 package_time):
+                 package_time, delivery_street_address):
         self.package_Id = package_id
+        self.delivery_street_address = delivery_street_address
         self.delivery_address = delivery_address
         self.delivery_deadline = delivery_deadline
         self.package_mass = package_mass
@@ -116,3 +117,4 @@ class Packages:
                 node = node.next
             if node is None:
                 continue
+

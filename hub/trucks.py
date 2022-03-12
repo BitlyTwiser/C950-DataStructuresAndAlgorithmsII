@@ -1,5 +1,6 @@
 import datetime
 from colors.colors import Colors
+from optimization.optimization import RoutingAlgorithm
 
 """
 Set status of packages to en route when they are loaded.
@@ -17,11 +18,11 @@ class Trucks:
 
     def truck_loading_dock(self):
         truck1_packages = [
-            self.packages.get(1),
-            self.packages.get(13),
-            self.packages.get(14),
             self.packages.get(15),
+            self.packages.get(14),
             self.packages.get(16),
+            self.packages.get(13),
+            self.packages.get(1),
             self.packages.get(17),
             self.packages.get(19),
             self.packages.get(20),
@@ -32,8 +33,8 @@ class Trucks:
             self.packages.get(34)
         ]
         truck2_packages = [
-            self.packages.get(3),
             self.packages.get(6),
+            self.packages.get(3),
             self.packages.get(18),
             self.packages.get(25),
             self.packages.get(26),
@@ -100,16 +101,6 @@ class Trucks:
     def calculate_total_mileage(self, truck1_mileage, truck2_mileage, truck3_mileage):
         self.total_distance = (truck1_mileage + truck2_mileage + truck3_mileage)
 
-        return self.total_distance
-
-    """
-    Determines the final delivery timestamp
-    O(1)
-    """
-
-    def calculate_final_delivery_time(self, truck1_time, truck2_time, truck3_time):
-        pass
-
     """
     Performs all deliveries and utilizes the algorithms for optimal routing of all packages within each truck.
     """
@@ -118,6 +109,8 @@ class Trucks:
         truck1.start_deliveries()
         truck2.start_deliveries()
         truck3.start_deliveries()
+
+        self.calculate_total_mileage(truck1.total_miles, truck2.total_miles, truck3.total_miles)
 
     def print_delivery_message(self):
         print(
@@ -135,13 +128,12 @@ class Truck1:
         self.total_miles = 0
         self.departure_time = departure_time
         self.time = departure_time
+        # Used to track times of deliveries and when the truck needs to return to hub.
+        self.delivery_time = departure_time
 
     """
-    Sets time value as deliveries are made.
-    O(1)
-    """
-    """
-    Sets the truck departure time of a package.
+    Sets the truck departure time of a package and status.
+    O(N)
     """
 
     def set_time_and_initial_status_for_packages(self):
@@ -152,9 +144,14 @@ class Truck1:
     def package_delivery_time(self):
         pass
 
-    # Keep track of arbitrary time value here. Upon delivery also update the tie value so thae CLI programwill pick it up.
+    # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
+    # Aka split up the distances and do not use them all in each truck.
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
+        algo = RoutingAlgorithm(self.packages)
+
+        algo.sort_fastest_routes(self, return_to_hub=True)
+
 
 
 """
@@ -169,10 +166,11 @@ class Truck2:
         self.total_miles = 0
         self.departure_time = departure_time
         self.time = departure_time
+        self.delivery_time = departure_time
 
     """
-    Sets time value as deliveries are made.
-    O(1)
+    Sets the truck departure time of a package and status.
+    O(N)
     """
 
     def set_time_and_initial_status_for_packages(self):
@@ -183,8 +181,13 @@ class Truck2:
     def package_delivery(self):
         pass
 
+    # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
+        algo = RoutingAlgorithm(self.packages)
+
+        algo.sort_fastest_routes(self)
+
 
 
 """
@@ -199,12 +202,13 @@ class Truck3:
         self.total_miles = 0
         self.departure_time = departure_time
         self.time = departure_time
+        self.delivery_time = departure_time
         # The new value for the known bad address for package #9.
         self.new_address = '410 S State St., Salt Lake City, UT 84111'
 
     """
-    Sets time value as deliveries are made.
-    O(1)
+    Sets the truck departure time of a package and status.
+    O(N)
     """
 
     def set_time_and_initial_status_for_packages(self):
@@ -219,3 +223,6 @@ class Truck3:
         self.set_time_and_initial_status_for_packages()
         # Set good address for packages #9 since we now know the good address.
         self.packages[5].delivery_address = self.new_address
+        algo = RoutingAlgorithm(self.packages)
+
+        algo.sort_fastest_routes(self)
