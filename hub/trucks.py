@@ -1,5 +1,5 @@
 import datetime
-from hub.csv_parser import CsvParser
+from colors.colors import Colors
 
 """
 Set status of packages to en route when they are loaded.
@@ -13,57 +13,54 @@ class Trucks:
         self.truck1_departure = datetime.time(hour=8, minute=0).strftime("%I:%M %p")
         self.truck2_departure = datetime.time(hour=9, minute=5).strftime("%I:%M %p")
         self.truck3_departure = datetime.time(hour=10, minute=21).strftime("%I:%M %p")
-        self.distance_table_data = CsvParser().parse_distance_table_data_dump_into_hash()
-        # The new value for the known bad address for package #9.
-        self.new_address = '410 S State St., Salt Lake City, UT 84111'
+
 
     def truck_loading_dock(self):
         truck1_packages = [
-            self.packages[1],
-            self.packages[13],
-            self.packages[14],
-            self.packages[15],
-            self.packages[16],
-            self.packages[17],
-            self.packages[19],
-            self.packages[20],
-            self.packages[21],
-            self.packages[29],
-            self.packages[30],
-            self.packages[31],
-            self.packages[34]
+            self.packages.get(1),
+            self.packages.get(13),
+            self.packages.get(14),
+            self.packages.get(15),
+            self.packages.get(16),
+            self.packages.get(17),
+            self.packages.get(19),
+            self.packages.get(20),
+            self.packages.get(21),
+            self.packages.get(29),
+            self.packages.get(30),
+            self.packages.get(31),
+            self.packages.get(34)
         ]
         truck2_packages = [
-            self.packages[3],
-            self.packages[6],
-            self.packages[18],
-            self.packages[25],
-            self.packages[26],
-            self.packages[28],
-            self.packages[32],
-            self.packages[33],
-            self.packages[36],
-            self.packages[37],
-            self.packages[38],
-            self.packages[40],
+            self.packages.get(3),
+            self.packages.get(6),
+            self.packages.get(18),
+            self.packages.get(25),
+            self.packages.get(26),
+            self.packages.get(28),
+            self.packages.get(32),
+            self.packages.get(33),
+            self.packages.get(36),
+            self.packages.get(37),
+            self.packages.get(38),
+            self.packages.get(40),
         ]
-        self.packages[9].value.delivery_address = self.new_address
         truck3_packages = [
-            self.packages[2],
-            self.packages[4],
-            self.packages[5],
-            self.packages[7],
-            self.packages[8],
-            self.packages[9],
-            self.packages[10],
-            self.packages[11],
-            self.packages[12],
-            self.packages[22],
-            self.packages[23],
-            self.packages[24],
-            self.packages[27],
-            self.packages[35],
-            self.packages[39],
+            self.packages.get(2),
+            self.packages.get(4),
+            self.packages.get(5),
+            self.packages.get(7),
+            self.packages.get(8),
+            self.packages.get(9),
+            self.packages.get(10),
+            self.packages.get(11),
+            self.packages.get(12),
+            self.packages.get(22),
+            self.packages.get(23),
+            self.packages.get(24),
+            self.packages.get(27),
+            self.packages.get(35),
+            self.packages.get(39),
         ]
 
         truck1 = self.load_truck_one(truck1_packages)
@@ -91,6 +88,8 @@ class Trucks:
     """
 
     def load_truck_three(self, truck3_packages):
+        # Do this when delivery starts
+
         return Truck3(truck3_packages, self.truck3_departure)
 
     """
@@ -116,11 +115,13 @@ class Trucks:
     """
 
     def run_deliveries(self, truck1, truck2, truck3):
-        self.distance_table_data
         truck1.start_deliveries()
         truck2.start_deliveries()
         truck3.start_deliveries()
 
+    def print_delivery_message(self):
+        print(
+            f"{Colors.OKGREEN}All deliveries were completed with total mileage of: {Colors.BOLD}{Colors.OKBLUE}{self.total_distance}{Colors.ENDC}")
 
 """
 Truck1 object, handles all deliveries and reporting for this truck
@@ -139,16 +140,21 @@ class Truck1:
     Sets time value as deliveries are made.
     O(1)
     """
+    """
+    Sets the truck departure time of a package.
+    """
 
-    def set_time(self, time):
-        self.departure_time + time
+    def set_time_and_initial_status_for_packages(self):
+        for i in range(len(self.packages)):
+            self.packages[i].package_truck_departure_time = self.departure_time
+            self.packages[i].delivery_status = 'en route'
 
-    def package_delivery(self):
+    def package_delivery_time(self):
         pass
 
     # Keep track of arbitrary time value here. Upon delivery also update the tie value so thae CLI programwill pick it up.
     def start_deliveries(self):
-        pass
+        self.set_time_and_initial_status_for_packages()
 
 
 """
@@ -169,14 +175,16 @@ class Truck2:
     O(1)
     """
 
-    def set_time(self, time):
-        self.departure_time + time
+    def set_time_and_initial_status_for_packages(self):
+        for i in range(len(self.packages)):
+            self.packages[i].package_truck_departure_time = self.departure_time
+            self.packages[i].delivery_status = 'en route'
 
     def package_delivery(self):
         pass
 
     def start_deliveries(self):
-        pass
+        self.set_time_and_initial_status_for_packages()
 
 
 """
@@ -191,17 +199,23 @@ class Truck3:
         self.total_miles = 0
         self.departure_time = departure_time
         self.time = departure_time
+        # The new value for the known bad address for package #9.
+        self.new_address = '410 S State St., Salt Lake City, UT 84111'
 
     """
     Sets time value as deliveries are made.
     O(1)
     """
 
-    def set_time(self, time):
-        self.departure_time + time
+    def set_time_and_initial_status_for_packages(self):
+        for i in range(len(self.packages)):
+            self.packages[i].package_truck_departure_time = self.departure_time
+            self.packages[i].delivery_status = 'en route'
 
     def package_delivery(self):
         pass
 
     def start_deliveries(self):
-        pass
+        self.set_time_and_initial_status_for_packages()
+        # Set good address for packages #9 since we now know the good address.
+        self.packages[5].delivery_address = self.new_address

@@ -17,9 +17,9 @@ class Package:
         self.package_mass = package_mass
         self.special_notes = special_notes
         self.delivery_status = delivery_status
-        self.delivery_time = 'None'
         # separate time element to track just general time of package for the CLI interface
         self.package_time = package_time
+        self.package_truck_departure_time = ''
 
     """
      Sets package status
@@ -43,11 +43,16 @@ class Package:
     """
 
     def print_package_details(self):
+        if self.delivery_status == 'delivered':
+            delivery_time = self.package_time
+        else:
+            delivery_time = 'None'
+
         print(f"Package ID: {self.package_Id}\t"
               f"Address: {self.delivery_address}\t"
               f"Deadline: {self.delivery_deadline}\t "
               f"Mass: {self.package_mass}\t "
-              f"Delivery Time: {self.delivery_time}\t"
+              f"Delivery Time: {delivery_time}\t"
               f"Status: {self.delivery_status}")
 
 
