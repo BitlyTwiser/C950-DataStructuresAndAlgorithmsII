@@ -5,6 +5,7 @@ Packages Class Object
 
 Sets package status upon delivery/departure
 Sets time of packages based on distance traveled.
+O(1)
 """
 
 
@@ -65,6 +66,7 @@ Packages class for tracking ALL packages
 class Packages:
     """
         Constructor for Packages class
+        O(1)
     """
 
     def __init__(self, packages):

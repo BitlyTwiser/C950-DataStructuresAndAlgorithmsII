@@ -4,6 +4,7 @@ import argparse
 CLI class object for the user interface
 
 Simple argparse user interface for user interaction
+O(1)
 """
 
 

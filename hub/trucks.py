@@ -72,6 +72,7 @@ class Trucks:
 
     """
     Loads truck 1 with packages
+    O(1)
     """
 
     def load_truck_one(self, truck1_packages):
@@ -79,6 +80,7 @@ class Trucks:
 
     """
     Loads truck 2 with packages
+    O(1)
     """
 
     def load_truck_two(self, truck2_packages):
@@ -86,6 +88,7 @@ class Trucks:
 
     """
     Loads truck 3 with packages and updates package #9 when we load truck 3
+    O(1)
     """
 
     def load_truck_three(self, truck3_packages):
@@ -103,6 +106,7 @@ class Trucks:
 
     """
     Performs all deliveries and utilizes the algorithms for optimal routing of all packages within each truck.
+    O(N^2) - This runs all primary algorithms for sorting, thus its O(N^2) which is the worst case of the sorting algorithm.
     """
 
     def run_deliveries(self, truck1, truck2, truck3):
@@ -122,7 +126,10 @@ Truck1 object, handles all deliveries and reporting for this truck
 
 
 class Truck1:
-    # Constructor O(1)
+    """
+    Constructor
+    O(1)
+    """
     def __init__(self, packages, departure_time):
         self.packages = packages
         self.total_miles = 0
@@ -141,8 +148,10 @@ class Truck1:
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
 
-    # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
-    # Aka split up the distances and do not use them all in each truck.
+    """
+    Primary delivery method that utilizes the sorting algorithm.
+    O(N^2) - As this is the BigO for the sorting process
+    """
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
         algo = RoutingAlgorithm(self.packages)
@@ -157,7 +166,9 @@ Truck2 object, handles all deliveries and reporting for this truck
 
 
 class Truck2:
-    # Constructor O(1)
+    """
+    Constructor O(1)
+    """
     def __init__(self, packages, departure_time):
         self.packages = packages
         self.total_miles = 0
@@ -175,7 +186,10 @@ class Truck2:
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
 
-    # we only need a subset of the data from the distances CSV, anything that has the addresses we need here.
+    """
+    Primary delivery method that utilizes the sorting algorithm.
+    O(N^2) - As this is the BigO for the sorting process
+    """
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
         algo = RoutingAlgorithm(self.packages)
@@ -197,7 +211,7 @@ class Truck3:
         self.departure_time = departure_time
         self.time = departure_time
         self.delivery_time = departure_time
-        # The new value for the known bad address for package #9.
+        # The new value for the known bad address for package #9, NOT updated until after 10:20.
         self.new_address = '410 S State St., Salt Lake City, UT 84111'
 
     """
@@ -210,6 +224,10 @@ class Truck3:
             self.packages[i].package_truck_departure_time = self.departure_time
             self.packages[i].delivery_status = 'en route'
 
+    """
+    Primary delivery method that utilizes the sorting algorithm.
+    O(N^2) - As this is the BigO for the sorting process
+    """
     def start_deliveries(self):
         self.set_time_and_initial_status_for_packages()
         # Set good address for packages #9 since we now know the good address.

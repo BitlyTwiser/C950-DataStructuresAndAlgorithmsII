@@ -1,28 +1,26 @@
-# C195-DataStructuresAndAlgorithmsII
-C950 project.Basically a variation of the traveling salesman problem
+# C950-DataStructuresAndAlgorithmsII
+ - C950 Package Delivery System
 
 ## Overview:
-- Basically split this into a few parts.
+- The objective is to sucessfully deliver 40 packages in under 140 miles.
+- This application is setup as a basic CLI application using argparse. 
+- All time values are expected to be in miliary time in HH:MM format.
+## General Usage:
+- To view the commands on can utilize the following:
+```python3 main.py -h```
+- This command displays the help menu for interacting with the application.
 
 
-## Coding: 2 parts
-### Functinoality (loading data, data structures etc..) (You can modify the xlsx sheets and make them CSV's)
-- Make a shash table from the ground up, no built in libraries.
-- Keep track of your packages. (Miliage and when they were delivered)
-- User interface (cli to query data)
-- Add comment at each block denoting the time complexity
+## List all packages:
+- One can display ALL packages by using the ```python3 main.py -a``` command
 
-### optimization (algorithms):
-- Do not use Dykstras
-- how to load the trucks and which packages go into the truck
-- 16 is max per truck
-- use greedy algorithm
-- Delivery of packages is self adusting part of alrogithm
-- Heuristics manualy loading trucks? Not sure here, just automate this.
-- Make up your own algorithm for this item.
+## See specific package details at specific time:
+- One can view a specific package, at a specific time using the commands ```-p``` and ```-t```
+- For package ID and timestamp. 
+- Example: ```python3 main.py -p 1 -t "08:00"```
+-
 
-### The document:
-- This seems to be returned often. 
-- Do not use the overview as a template
-- Use section headers, use the requirements as the section headers
-
+## List all packages at a given time:
+- We can view where all the packages are within a given time range using the the flags ```-tr``` for time range.
+- Time is expected to be in format: ```HH:MM-HH:MM```
+- ```python3 main.py -tr "09:00-10:00"```

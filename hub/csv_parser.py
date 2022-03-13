@@ -17,7 +17,6 @@ class CsvParser:
         self.packages_csv = 'wgups_package_file.csv'
         self.distance_table_csv = 'wgups_distance_table.csv'
 
-    # Private helper method to parse address from fields.
     """
     Parse distance table data and create hash containing vertices of the distance values and keys of base64 
     encoded address strings.  

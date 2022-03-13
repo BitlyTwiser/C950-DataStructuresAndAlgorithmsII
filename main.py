@@ -14,9 +14,11 @@ from formulas.formulas import Formulas
 import datetime
 
 """
-Primary execution point of the applicatino.
+Primary execution point of the application.
 
-The CLI data is read in
+The CLI data is read in and utilized for displaying data about the packages.
+
+O(1)
 """
 
 
@@ -33,11 +35,6 @@ def main():
     # Tuple unpacking to grab all trucks.
     t1, t2, t3 = trucks.truck_loading_dock()
 
-    # Run all the deliveries, then just use the timestamps to parse the data and determine what has been delivered and waht has not been
-    # Adjust the reports accordingly.
-    # We will use delivery time for this, if the given timestamp is before the item is delivered its at the hub
-    # If its before the truck itself leaves, then its at hub lol
-    # Run all deliveries
     trucks.run_deliveries(t1, t2, t3)
 
     if args.all:
@@ -58,14 +55,6 @@ def main():
             except IndexError:
                 print(f"{Colors.FAIL}Please present time in format: HH:MM. Example: 16:00{Colors.ENDC}")
             else:
-                # Note: Do the same check here for departure time and delivery time before displaying results
-                # This one is easy as its a single package.
-                # Run all the things, check deliver time and the truck departure time.
-                # at this time we have delivered everythuing, now we just hack the time items to show to client
-                # When we get this to work for a single item, we can do it for all.
-                # if time we want >= truck.departure and package.delivery is not none and >= time we want
-                # Display as is, else if time < truck.departure, its at hug
-                # else if time > departure < delivery is None, its in transite.
                 trucks.print_delivery_message()
                 Formulas().package_data_display_engine_for_specific_time(package_by_id, timestamp)
                 package_by_id.print_package_details()
@@ -84,7 +73,6 @@ def main():
             print(f"{Colors.FAIL}Seems this is an invalid time value. Please present time in format: HH:MM-HH:MM. "
                   f"Example: 16:00-17:00{Colors.ENDC}")
         else:
-            # Fix it here
             for package in packages.packages:
                 if package is None:
                     continue

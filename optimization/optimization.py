@@ -16,11 +16,7 @@ class RoutingAlgorithm:
         self.packages = packages
         self.distance_data, self.address_headers = CsvParser().parse_distance_table_data_dump_into_hash()
 
-    """
-    Sorts delivery data for set of packages, determines shortest paths between vertices of a "grpah" of noddes.
-    Updates the packages with delivered timestmaps and tracks the distance of the truck.
-    Tracks total mileage to be returned to as to set yhe mileage for the truck.
-    
+    """    
     The algorithm here is an implementation of the "nearest neighbor" algorithm to determine the next route based off of
     all routes in the arrays of times. Which can be thought of as vertices of graph. Given our current location in euclidean space, we
     determine the next smallest value from all vertices that we have in our addresses.
@@ -67,6 +63,8 @@ class RoutingAlgorithm:
 
     """
     Primary engine behind the algorithm for determining shortest path.
+    Euclidean distances is used in attempts to ascertain the nearest neighbor to utilize when routing.
+    This neighbor is then passed up the stack and used in the primary algorithm.
     O(N)
     """
     def get_nearest_addresses(self, address_vertices, row, neighbors_count):
@@ -103,6 +101,8 @@ class RoutingAlgorithm:
 
     """
     Determine the exact distance between addresses
+    Parses the exact distance to the next node using the neighbors value and the hears from the distance CSV.
+    This allows us to index into the given nodes of neighbors and determine the next neighbor and distance.
     O(N)
     """
     def find_distance_between_the_closest_element(self, neighbors, key):

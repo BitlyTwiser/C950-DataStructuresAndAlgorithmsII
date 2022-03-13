@@ -1,4 +1,6 @@
-# Node object curating a linked list to use within the hash table
+"""
+Note object for linked list used in hashtable
+"""
 class Node:
     def __init__(self, key, value):
         self.key = key
@@ -6,7 +8,6 @@ class Node:
         self.next = None
 
 
-# Hash table with separate chaining
 class HashMap:
     # Constructor hash table
     def __init__(self):
