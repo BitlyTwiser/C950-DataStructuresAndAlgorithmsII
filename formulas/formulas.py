@@ -1,4 +1,5 @@
 from math import sqrt
+import datetime
 
 class Formulas:
     """
@@ -34,12 +35,14 @@ class Formulas:
 
     def package_data_display_engine_for_specific_time(self, package, start_time):
         package_departure_time = package.package_truck_departure_time
+        if package.package_Id == "9" and start_time < datetime.time(hour=10, minute=21).strftime("%I:%M %p"):
+            package.delivery_address = '300 State St, Salt Lake City, UT, 84103'
         if start_time <= package_departure_time:
             package.delivery_status = "at hub"
             package.package_time = "None"
-        elif start_time >= package_departure_time and start_time >= package.package_time.strftime("%I:%M %p"):
+        elif start_time >= package_departure_time and start_time >= package.package_time:
             pass
-        elif start_time >= package_departure_time < package.package_time.strftime("%I:%M %p"):
+        elif start_time >= package_departure_time < package.package_time:
             package.delivery_status = 'en route'
             package.package_time = "None"
     """
