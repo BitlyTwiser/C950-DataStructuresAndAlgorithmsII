@@ -34,7 +34,7 @@ class RoutingAlgorithm:
         addresses = {key:value for (key, value) in self.distance_data.items() for node in self.packages if node.delivery_street_address == key}
         address_vertices = [vertices for vertices in addresses.values()]
 
-        address_count = len(addresses_array) - 1
+        address_count = len(addresses_array)
         ticker = 0
 
         for p in self.packages:
@@ -42,6 +42,7 @@ class RoutingAlgorithm:
             # Update first package with distance from hub and deliver it.
             if ticker == 0:
                 self.update_package_and_truck(truck, p, address_data[0])
+                ticker += 1
                 continue
 
             if return_to_hub and ticker == address_count:
@@ -49,13 +50,17 @@ class RoutingAlgorithm:
                 self.update_package_and_truck(truck, p, address_data[0])
                 continue
 
-            # Update all the other packages and deliver them using the neighbors found in the nearest neighbor algorithm.
-            neighbors, neighbor_distance = self.get_nearest_addresses(address_vertices, address_data, 1)
-            for i in range(len(address_vertices)):
+            # Use nearest neighbor to determine which address that is, then find the distance between the two
+            # Also look at delivering packages with the same address at the same time for optimal delivery
+            neighbors = self.get_nearest_addresses(address_vertices, address_data, 2)
+            for i in range(len(self.packages)):
                 if list(addresses_array[i].values())[0] == neighbors:
                     for pack in self.packages:
-                        if pack.delivery_street_address == list(addresses_array[i].items())[0][0]:
-                            self.update_package_and_truck(truck, pack, neighbor_distance)
+                        # W should be able to handle duplicates here
+                        if pack.delivery_street_address == list(addresses_array[i].items())[0][0] and pack.delivery_status != 'delivered':
+                            self.update_package_and_truck(truck, pack, self.find_distance_between_the_closest_element(neighbors, list(addresses_array[i].items())[0][0]), already_ran=True)
+
+
 
             ticker += 1
 
@@ -74,9 +79,13 @@ class RoutingAlgorithm:
             neighbors.append(distances[i][0])
         # only ever return the first neighbor as this is the next node we will visit.
         # Return the distance value itself for time calculation and the nearest neighbors array
-        return distances[1][0], distances[1][1]
+        return neighbors[1]
 
-    def update_package_and_truck(self, truck, package, distance):
+    """
+    Update package data fields
+    O(1)
+    """
+    def update_package_and_truck(self, truck, package, distance, already_ran=False):
         hour = truck.delivery_time.split(":")[0]
         minute = truck.delivery_time.split(":")[1].split(" ")[0]
         delivery_time = (datetime(100, 1, 1, int(hour), int(minute)) +
@@ -86,3 +95,11 @@ class RoutingAlgorithm:
         truck.delivery_time = delivery_time
         truck.total_miles += distance
 
+    """
+    Determine the exact distance between addresses
+    O(N)
+    """
+    def find_distance_between_the_closest_element(self, neighbors, key):
+        for i in range(len(self.address_headers)):
+            if self.address_headers[i] == key:
+                return neighbors[i-1]
