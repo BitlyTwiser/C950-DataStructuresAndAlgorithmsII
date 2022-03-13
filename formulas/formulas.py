@@ -14,17 +14,22 @@ class Formulas:
     Determines how to adjust packages to display correct data upon the user input query for time range.
     O(N)
     """
-
     def package_data_display_engine_for_start_and_end_time(self, package, start_time, end_time):
         package = package.value
         package_departure_time = package.package_truck_departure_time
+        if package.package_Id == "9" and start_time < datetime.time(hour=10, minute=21).strftime("%I:%M %p"):
+            package.delivery_address = '300 State St, Salt Lake City, UT, 84103'
+        if int(package.package_time.split(":")[0]) <= 5:
+            hour = int(package.package_time.split(":")[0]) + 12
+            minute = package.package_time.split(":")[1].split(" ")[0]
+            package.package_time = f"{hour}:{minute} PM"
         if start_time < package_departure_time:
             package.delivery_status = "at hub"
             package.package_time = "None"
         elif start_time >= package_departure_time <= end_time and start_time >= package.package_time <= end_time and package.delivery_status != 'delivered':
             package.delivery_status = 'en route'
             package.package_time = "None"
-        elif start_time >= package_departure_time and (end_time < package.package_time or package.delivery_status != 'delivered'):
+        elif start_time <= package.package_time >= end_time:
             package.delivery_status = 'en route'
             package.package_time = "None"
 
