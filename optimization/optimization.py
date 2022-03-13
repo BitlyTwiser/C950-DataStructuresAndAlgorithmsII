@@ -58,7 +58,7 @@ class RoutingAlgorithm:
                     if p.delivery_street_address in packages_already_delivered:
                         self.update_package_and_truck(truck, p,
                                                       self.find_distance_between_the_closest_element(neighbors, list(
-                                                          addresses_array[i].items())[0][0]), True)
+                                                          addresses_array[i].items())[0][0]), already_ran=True)
                     else:
                         packages_already_delivered.append(p.delivery_street_address)
                         self.update_package_and_truck(truck, p, self.find_distance_between_the_closest_element(neighbors, list(addresses_array[i].items())[0][0]))
@@ -92,6 +92,10 @@ class RoutingAlgorithm:
         delivery_time = (datetime(100, 1, 1, int(hour), int(minute)) +
                          timedelta(minutes=Formulas().get_time_from_distance_and_speed(distance, 18))).strftime("%I:%M %p")
         package.delivery_status = 'delivered'
+        if int(hour) > 12 or int(hour) < 5:
+            hour = delivery_time.split(":")[0]
+            minute = delivery_time.split(":")[1].split(" ")[0]
+            delivery_time = f"{hour}:{minute} PM"
         package.package_time = delivery_time
         truck.delivery_time = delivery_time
         if already_ran is False:
