@@ -33,8 +33,9 @@ class RoutingAlgorithm:
          node.delivery_street_address == key}
         addresses = {key:value for (key, value) in self.distance_data.items() for node in self.packages if node.delivery_street_address == key}
         address_vertices = [vertices for vertices in addresses.values()]
+        packages_already_delivered = []
 
-        address_count = len(addresses_array)
+        address_count = len(addresses_array) - 1
         ticker = 0
 
         for p in self.packages:
@@ -50,17 +51,17 @@ class RoutingAlgorithm:
                 self.update_package_and_truck(truck, p, address_data[0])
                 continue
 
-            # Use nearest neighbor to determine which address that is, then find the distance between the two
-            # Also look at delivering packages with the same address at the same time for optimal delivery
+            # HERE: some truck3 items are broken and showing 2 AM lol
             neighbors = self.get_nearest_addresses(address_vertices, address_data, 2)
             for i in range(len(self.packages)):
                 if list(addresses_array[i].values())[0] == neighbors:
-                    for pack in self.packages:
-                        # W should be able to handle duplicates here
-                        if pack.delivery_street_address == list(addresses_array[i].items())[0][0] and pack.delivery_status != 'delivered':
-                            self.update_package_and_truck(truck, pack, self.find_distance_between_the_closest_element(neighbors, list(addresses_array[i].items())[0][0]), already_ran=True)
-
-
+                    if p.delivery_street_address in packages_already_delivered:
+                        self.update_package_and_truck(truck, p,
+                                                      self.find_distance_between_the_closest_element(neighbors, list(
+                                                          addresses_array[i].items())[0][0]), True)
+                    else:
+                        packages_already_delivered.append(p.delivery_street_address)
+                        self.update_package_and_truck(truck, p, self.find_distance_between_the_closest_element(neighbors, list(addresses_array[i].items())[0][0]))
 
             ticker += 1
 
@@ -93,7 +94,8 @@ class RoutingAlgorithm:
         package.delivery_status = 'delivered'
         package.package_time = delivery_time
         truck.delivery_time = delivery_time
-        truck.total_miles += distance
+        if already_ran is False:
+            truck.total_miles += distance
 
     """
     Determine the exact distance between addresses
